@@ -1,8 +1,12 @@
 TARGET = micro-ecc
 
-SRC += main.c uECC.c
+SRC += main.c uecc/uECC.c
 
-PLATFORM = CWNANO
+MKDIR_LIST += uecc
+
+EXTRAINCDIRS += uecc
+
+PLATFORM ?= CWNANO
 
 ifeq ($(PLATFORM),CW308_XMEGA)
 
