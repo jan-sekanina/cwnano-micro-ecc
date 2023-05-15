@@ -1,7 +1,6 @@
 #include "hal/hal.h"
 #include "simpleserial/simpleserial.h"
 #include "uecc/uECC.h"
-#include <stddef.h>
 
 static uint32_t state = 0xdeadbeef;
 
