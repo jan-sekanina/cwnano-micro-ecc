@@ -8,3 +8,5 @@
 *.map
 *.lss
 .dep/
+
+virt/
