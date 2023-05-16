@@ -2,6 +2,12 @@
 #include "simpleserial/simpleserial.h"
 #include "uecc/uECC.h"
 
+static void wait_a_bit(){
+    for (int i = 0; i < F_CPU / 100; i++) {
+        NOP()
+    }
+}
+
 static uint32_t state = 0xdeadbeef;
 
 static uint32_t xorshift32(void) {
@@ -32,29 +38,47 @@ int uECC_prng(uint8_t *dest, unsigned size) {
     return 1;
 }
 
-static uint8_t pubkey[64];
-static uint8_t privkey[32];
+#define CURVE_SIZE 20
+
+static uECC_Curve curve;
+
+static uint8_t pubkey[CURVE_SIZE * 2];
+static uint8_t privkey[CURVE_SIZE];
 
 static uint8_t cmd_generate_keypair(uint8_t *data, uint16_t len) {
-    uECC_make_key(pubkey, privkey, uECC_secp256r1());
+    led_error(1);
+    uECC_make_key(pubkey, privkey, curve);
+    led_error(0);
     return 0;
 }
 
 static uint8_t cmd_export(uint8_t *data, uint16_t len) {
-    simpleserial_put('w', 64, pubkey);
+    led_error(1);
+    wait_a_bit();
+    simpleserial_put('x', CURVE_SIZE, pubkey);
+    wait_a_bit();
+    simpleserial_put('y', CURVE_SIZE, pubkey + CURVE_SIZE);
+    led_error(0);
     return 0;
 }
 
 static uint8_t cmd_sign(uint8_t *data, uint16_t len) {
-    uint8_t signature[64];
-    uECC_sign(privkey, data, len, signature, uECC_secp256r1());
+    led_error(1);
+    uint8_t signature[CURVE_SIZE * 2];
+    trigger_high();
+    uECC_sign(privkey, data, len, signature, curve);
+    trigger_low();
 
-    simpleserial_put('s', 64, signature);
+    simpleserial_put('r', CURVE_SIZE, signature);
+    wait_a_bit();
+    simpleserial_put('s', CURVE_SIZE, signature + CURVE_SIZE);
+    led_error(0);
     return 0;
 }
 
 int main(void) {
     uECC_set_rng(&uECC_prng);
+    curve = uECC_secp160r1();
 
     platform_init();
     init_uart();
@@ -65,7 +89,11 @@ int main(void) {
     simpleserial_addcmd('e', 0, cmd_export);
     simpleserial_addcmd('s', 32, cmd_sign);
 
+    led_ok(1);
+
     while (simpleserial_get());
+
+    led_ok(0);
 
     return 0;
 }

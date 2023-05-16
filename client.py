@@ -1,3 +1,4 @@
+import time
 from typing import Union, List
 
 from pyecsca.sca.target import SimpleSerialTarget, ChipWhispererTarget, BinaryTarget, SimpleSerialMessage as SMessage
@@ -23,23 +24,31 @@ class TargetBase(SimpleSerialTarget):
         """Export the public key, get `x` and `y` coordinates."""
         cmd = "e"
         resp = self.send_cmd(SMessage.from_raw(cmd), self.timeout)
-        pubkey_data = resp["w"].data
-        pubkey_len = len(pubkey_data)
-        x = int(pubkey_data[:pubkey_len // 2], 16)
-        y = int(pubkey_data[pubkey_len // 2:], 16)
+        x_data = resp["x"].data
+        y_data = resp["y"].data
+        x = int(x_data, 16)
+        y = int(y_data, 16)
         return x, y
 
     def sign(self, hash: bytes):
-        """Sign a message hash, needs to be 32 bytes, get `r` and `s` signature components."""
-        if len(hash) != 32:
-            raise ValueError("Hash needs to be 256-bits (32 bytes) long.")
+        """Sign a message hash, needs to be 20 bytes, get `r` and `s` signature components."""
+        if len(hash) != 20:
+            raise ValueError("Hash needs to be 160-bits (20 bytes) long.")
         cmd = "s" + hash.hex()
+        start = time.perf_counter()
         resp = self.send_cmd(SMessage.from_raw(cmd), self.timeout)
-        sig_data = resp["s"].data
-        sig_len = len(sig_data)
-        r = int(sig_data[:sig_len // 2], 16)
-        s = int(sig_data[sig_len // 2:], 16)
+        print(time.perf_counter() - start)
+        r_data = resp["r"].data
+        print(r_data)
+        s_data = resp["s"].data
+        print(s_data)
+        r = int(r_data, 16)
+        s = int(s_data, 16)
         return r, s
+
+    def halt(self):
+        """Halt the execution of the target."""
+        self.write(b"x\n")
 
 
 class DeviceTarget(TargetBase, ChipWhispererTarget):
