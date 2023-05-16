@@ -1,4 +1,3 @@
-import time
 from typing import Union, List
 
 from pyecsca.sca.target import SimpleSerialTarget, ChipWhispererTarget, BinaryTarget, SimpleSerialMessage as SMessage
@@ -8,7 +7,7 @@ from chipwhisperer.capture.api.programmers import STM32FProgrammer
 
 
 class TargetBase(SimpleSerialTarget):
-    timeout: int = 1000
+    timeout: int = 2000
 
     def init_prng(self, seed: bytes) -> None:
         """Initialize the PRNG with a 4-byte seed."""
@@ -35,13 +34,9 @@ class TargetBase(SimpleSerialTarget):
         if len(hash) != 20:
             raise ValueError("Hash needs to be 160-bits (20 bytes) long.")
         cmd = "s" + hash.hex()
-        start = time.perf_counter()
         resp = self.send_cmd(SMessage.from_raw(cmd), self.timeout)
-        print(time.perf_counter() - start)
         r_data = resp["r"].data
-        print(r_data)
         s_data = resp["s"].data
-        print(s_data)
         r = int(r_data, 16)
         s = int(s_data, 16)
         return r, s

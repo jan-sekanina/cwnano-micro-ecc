@@ -22,6 +22,7 @@ static uint8_t cmd_init_prng(uint8_t *data, uint16_t len) {
             ((uint32_t) data[1]) << 16 ||
             ((uint32_t) data[2]) << 8 ||
             ((uint32_t) data[3]);
+    wait_a_bit();
     return 0;
 }
 
@@ -38,7 +39,7 @@ int uECC_prng(uint8_t *dest, unsigned size) {
     return 1;
 }
 
-#define CURVE_SIZE 20
+#define CURVE_SIZE 24
 
 static uECC_Curve curve;
 
@@ -78,7 +79,7 @@ static uint8_t cmd_sign(uint8_t *data, uint16_t len) {
 
 int main(void) {
     uECC_set_rng(&uECC_prng);
-    curve = uECC_secp160r1();
+    curve = uECC_secp192r1();
 
     platform_init();
     init_uart();
