@@ -1,5 +1,6 @@
 *.o
 *.lst
+*.bin
 *.so
 *.elf
 *.hex
