@@ -10,3 +10,5 @@
 .dep/
 
 virt/
+.idea/
+__pycache__/
