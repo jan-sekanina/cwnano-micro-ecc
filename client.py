@@ -1,12 +1,13 @@
 from typing import Union, List
 
+from abc import ABC
 from pyecsca.sca.target import SimpleSerialTarget, ChipWhispererTarget, BinaryTarget, SimpleSerialMessage as SMessage
 import chipwhisperer as cw
 from chipwhisperer.capture.targets.SimpleSerial import SimpleSerial
 from chipwhisperer.capture.api.programmers import STM32FProgrammer
 
 
-class TargetBase(SimpleSerialTarget):
+class TargetBase(ABC, SimpleSerialTarget):
     timeout: int = 2000
 
     def init_prng(self, seed: bytes) -> None:
@@ -47,6 +48,7 @@ class TargetBase(SimpleSerialTarget):
 
 
 class DeviceTarget(TargetBase, ChipWhispererTarget):
+    """A device target, one of ChipWhisperer-Nano or CW308 with the STM32F0/STM32F3 boards."""
 
     def __init__(self):
         scope = cw.scope()
@@ -57,6 +59,7 @@ class DeviceTarget(TargetBase, ChipWhispererTarget):
 
 
 class HostTarget(TargetBase, BinaryTarget):
+    """A host target, runs the binary directly and interacts via stdin/stdout."""
 
     def __init__(self, binary: Union[str, List[str]], debug_output: bool = False):
         super().__init__(binary, debug_output)

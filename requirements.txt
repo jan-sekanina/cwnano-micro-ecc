@@ -1,5 +1,7 @@
 git+https://github.com/J08nY/pyecsca
 git+https://github.com/J08nY/pyecsca-codegen
 git+https://github.com/holoviz/datashader
+cysignals
+fpylll
 chipwhisperer
 ecdsa
