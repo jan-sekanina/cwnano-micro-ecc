@@ -7,6 +7,7 @@ Some structure:
         You don't need to touch this in any way. This is taken from ChipWhisperer firmware directory.
  - simpleserial: Contains the ChipWhisperer SimpleSerial protocol implementation for the victim. 
                  You don't need to touch this in any way.
+ - notebooks: Contains the Jupyter notebooks useful for trace collection, analysis and attacks.
  - uecc: Contains a modified version of the [micro-ecc](https://github.com/kmackay/micro-ecc) library.
          You do likely need to look at it.
  - main.c: Contains the target code that runs on the board and offers several commands.

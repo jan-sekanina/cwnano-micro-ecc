@@ -64,7 +64,7 @@ static uint8_t cmd_export(uint8_t *data, uint16_t len) {
 }
 
 static uint8_t cmd_sign(uint8_t *data, uint16_t len) {
-    //led_error(1);
+    led_error(1);
     uint8_t signature[CURVE_SIZE * 2];
     trigger_high();
     uECC_sign(privkey, data, len, signature, curve);
@@ -73,7 +73,7 @@ static uint8_t cmd_sign(uint8_t *data, uint16_t len) {
     simpleserial_put('r', CURVE_SIZE, signature);
     wait_a_bit();
     simpleserial_put('s', CURVE_SIZE, signature + CURVE_SIZE);
-    //led_error(0);
+    led_error(0);
     return 0;
 }
 

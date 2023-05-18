@@ -1,13 +1,18 @@
+from hashlib import sha1
 from typing import Union, List
 
 from abc import ABC
+
+from ecdsa import VerifyingKey, NIST192p
+from ecdsa.ellipticcurve import Point
+from ecdsa.util import sigdecode_strings
 from pyecsca.sca.target import SimpleSerialTarget, ChipWhispererTarget, BinaryTarget, SimpleSerialMessage as SMessage
 import chipwhisperer as cw
 from chipwhisperer.capture.targets.SimpleSerial import SimpleSerial
 from chipwhisperer.capture.api.programmers import STM32FProgrammer
 
 
-class TargetBase(ABC, SimpleSerialTarget):
+class TargetBase(SimpleSerialTarget, ABC):
     timeout: int = 2000
 
     def init_prng(self, seed: bytes) -> None:
@@ -63,3 +68,11 @@ class HostTarget(TargetBase, BinaryTarget):
 
     def __init__(self, binary: Union[str, List[str]], debug_output: bool = False):
         super().__init__(binary, debug_output)
+
+
+def verify_signature(pubkey, signature, hash):
+    """Verify the signature, of the hash, made by the pubkey. Assumes secp192r1 curve."""
+    vk = VerifyingKey.from_public_point(Point(NIST192p.curve, pubkey[0], pubkey[1]), curve=NIST192p, hashfunc=sha1)
+    r, s = signature
+    signature = (r.to_bytes(vk.curve.baselen, byteorder="big"), s.to_bytes(vk.curve.baselen, byteorder="big"))
+    return vk.verify_digest(signature, hash, sigdecode=sigdecode_strings)
