@@ -1,5 +1,6 @@
 /* Copyright 2014, Kenneth MacKay. Licensed under the BSD 2-clause license. */
 
+#include "hal/hal.h"
 #include "uECC.h"
 #include "uECC_vli.h"
 
@@ -1269,7 +1270,9 @@ static int uECC_sign_with_k_internal(const uint8_t *private_key,
         return 0;
     }
 
+    NOP_512();
     carry = regularize_k(k, tmp, s, curve);
+    NOP_512();
     /* If an RNG function was specified, try to get a random initial Z value to improve
        protection against side-channel attacks. */
     if (g_rng_function) {

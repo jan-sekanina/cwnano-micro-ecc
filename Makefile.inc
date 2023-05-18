@@ -12,12 +12,6 @@
 #
 # make strip = Strip the binary.
 #
-# make program = Download the hex file to the device, using avrdude.
-#                Please customize the avrdude settings below first!
-#
-# make debug = Start either simulavr or avarice as specified for debugging,
-#              with avr-gdb or avr-insight as the front end for debugging.
-#
 # make filename.s = Just compile filename.c into the assembler code only.
 #
 # make filename.i = Create a preprocessed source file for use in submitting
@@ -398,43 +392,6 @@ $(OBJDIR):
 # Display compiler version information.
 gccversion :
 	@$(CC) --version
-
-
-
-# Program the device.
-program: $(TARGET-PLAT).hex $(TARGET-PLAT).eep
-	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
-
-
-# Generate avr-gdb config/init file which does the following:
-#     define the reset signal, load the target file, connect to target, and set
-#     a breakpoint at main().
-gdb-config:
-	@$(REMOVE) $(GDBINIT_FILE)
-	@echo define reset >> $(GDBINIT_FILE)
-	@echo SIGNAL SIGHUP >> $(GDBINIT_FILE)
-	@echo end >> $(GDBINIT_FILE)
-	@echo file $(TARGET-PLAT).elf >> $(GDBINIT_FILE)
-	@echo target remote $(DEBUG_HOST):$(DEBUG_PORT)  >> $(GDBINIT_FILE)
-ifeq ($(DEBUG_BACKEND),simulavr)
-	@echo load  >> $(GDBINIT_FILE)
-endif
-	@echo break main >> $(GDBINIT_FILE)
-
-debug: gdb-config $(TARGET-PLAT).elf
-ifeq ($(DEBUG_BACKEND), avarice)
-	@echo Starting AVaRICE - Press enter when "waiting to connect" message displays.
-	@$(WINSHELL) /c start avarice --jtag $(JTAG_DEV) --erase --program --file \
-	$(TARGET-PLAT).elf $(DEBUG_HOST):$(DEBUG_PORT)
-	@$(WINSHELL) /c pause
-
-else
-	@$(WINSHELL) /c start simulavr --gdbserver --device $(MCU) --clock-freq \
-	$(DEBUG_MFREQ) --port $(DEBUG_PORT)
-endif
-	@$(WINSHELL) /c start avr-$(DEBUG_UI) --command=$(GDBINIT_FILE)
-
-
 
 
 # Create final output files (.hex, .eep) from ELF output file.
