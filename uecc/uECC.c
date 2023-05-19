@@ -1,11 +1,10 @@
 /* Copyright 2014, Kenneth MacKay. Licensed under the BSD 2-clause license. */
 
-#include "hal/hal.h"
 #include "uECC.h"
 #include "uECC_vli.h"
 
 #ifndef uECC_RNG_MAX_TRIES
-    #define uECC_RNG_MAX_TRIES 64
+    #define uECC_RNG_MAX_TRIES 1
 #endif
 
 #if uECC_ENABLE_VLI_API
@@ -745,7 +744,6 @@ uECC_VLI_API void uECC_vli_modInv(uECC_word_t *result,
 
 /* Returns 1 if 'point' is the point at infinity, 0 otherwise. */
 #define EccPoint_isZero(point, curve) uECC_vli_isZero((point), (curve)->num_words * 2)
-
 /* Point multiplication algorithm using Montgomery's ladder with co-Z coordinates.
 From http://eprint.iacr.org/2011/338.pdf
 */
@@ -1244,100 +1242,11 @@ static void bits2int(uECC_word_t *native,
     }
 }
 
-static int uECC_sign_with_k_internal(const uint8_t *private_key,
-                            const uint8_t *message_hash,
-                            unsigned hash_size,
-                            uECC_word_t *k,
-                            uint8_t *signature,
-                            uECC_Curve curve) {
-
-    uECC_word_t tmp[uECC_MAX_WORDS];
-    uECC_word_t s[uECC_MAX_WORDS];
-    uECC_word_t *k2[2] = {tmp, s};
-    uECC_word_t *initial_Z = 0;
-#if uECC_VLI_NATIVE_LITTLE_ENDIAN
-    uECC_word_t *p = (uECC_word_t *)signature;
-#else
-    uECC_word_t p[uECC_MAX_WORDS * 2];
+#if uECC_LEAKY == 0
+#include "uECC_noleak.c"
+#elif uECC_LEAKY == 1
+#include "uECC_leak.c"
 #endif
-    uECC_word_t carry;
-    wordcount_t num_words = curve->num_words;
-    wordcount_t num_n_words = BITS_TO_WORDS(curve->num_n_bits);
-    bitcount_t num_n_bits = curve->num_n_bits;
-
-    /* Make sure 0 < k < curve_n */
-    if (uECC_vli_isZero(k, num_words) || uECC_vli_cmp(curve->n, k, num_n_words) != 1) {
-        return 0;
-    }
-
-    carry = regularize_k(k, tmp, s, curve);
-    /* If an RNG function was specified, try to get a random initial Z value to improve
-       protection against side-channel attacks. */
-    if (g_rng_function) {
-        if (!uECC_generate_random_int(k2[carry], curve->p, num_words)) {
-            return 0;
-        }
-        initial_Z = k2[carry];
-    }
-    EccPoint_mult(p, curve->G, k2[!carry], initial_Z, num_n_bits + 1, curve);
-    if (uECC_vli_isZero(p, num_words)) {
-        return 0;
-    }
-
-    /* If an RNG function was specified, get a random number
-       to prevent side channel analysis of k. */
-    if (!g_rng_function) {
-        uECC_vli_clear(tmp, num_n_words);
-        tmp[0] = 1;
-    } else if (!uECC_generate_random_int(tmp, curve->n, num_n_words)) {
-        return 0;
-    }
-
-    /* Prevent side channel analysis of uECC_vli_modInv() to determine
-       bits of k / the private key by premultiplying by a random number */
-    uECC_vli_modMult(k, k, tmp, curve->n, num_n_words); /* k' = rand * k */
-    uECC_vli_modInv(k, k, curve->n, num_n_words);       /* k = 1 / k' */
-    uECC_vli_modMult(k, k, tmp, curve->n, num_n_words); /* k = 1 / k */
-
-#if uECC_VLI_NATIVE_LITTLE_ENDIAN == 0
-    uECC_vli_nativeToBytes(signature, curve->num_bytes, p); /* store r */
-#endif
-
-#if uECC_VLI_NATIVE_LITTLE_ENDIAN
-    bcopy((uint8_t *) tmp, private_key, BITS_TO_BYTES(curve->num_n_bits));
-#else
-    uECC_vli_bytesToNative(tmp, private_key, BITS_TO_BYTES(curve->num_n_bits)); /* tmp = d */
-#endif
-
-    s[num_n_words - 1] = 0;
-    uECC_vli_set(s, p, num_words);
-    uECC_vli_modMult(s, tmp, s, curve->n, num_n_words); /* s = r*d */
-
-    bits2int(tmp, message_hash, hash_size, curve);
-    uECC_vli_modAdd(s, tmp, s, curve->n, num_n_words); /* s = e + r*d */
-    uECC_vli_modMult(s, s, k, curve->n, num_n_words);  /* s = (e + r*d) / k */
-    if (uECC_vli_numBits(s, num_n_words) > (bitcount_t)curve->num_bytes * 8) {
-        return 0;
-    }
-#if uECC_VLI_NATIVE_LITTLE_ENDIAN
-    bcopy((uint8_t *) signature + curve->num_bytes, (uint8_t *) s, curve->num_bytes);
-#else
-    uECC_vli_nativeToBytes(signature + curve->num_bytes, curve->num_bytes, s);
-#endif
-    return 1;
-}
-
-/* For testing - sign with an explicitly specified k value */
-int uECC_sign_with_k(const uint8_t *private_key,
-                            const uint8_t *message_hash,
-                            unsigned hash_size,
-                            const uint8_t *k,
-                            uint8_t *signature,
-                            uECC_Curve curve) {
-    uECC_word_t k2[uECC_MAX_WORDS];
-    bits2int(k2, k, BITS_TO_BYTES(curve->num_n_bits), curve);
-    return uECC_sign_with_k_internal(private_key, message_hash, hash_size, k2, signature, curve);
-}
 
 int uECC_sign(const uint8_t *private_key,
               const uint8_t *message_hash,

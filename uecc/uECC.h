@@ -52,6 +52,10 @@ the same endianness. */
     #define uECC_VLI_NATIVE_LITTLE_ENDIAN 0
 #endif
 
+#ifndef uECC_LEAKY
+    #define uECC_LEAKY 0
+#endif
+
 /* Curve support selection. Set to 0 to remove that curve. */
 #ifndef uECC_SUPPORTS_secp160r1
     #define uECC_SUPPORTS_secp160r1 1
