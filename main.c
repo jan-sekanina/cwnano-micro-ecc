@@ -18,9 +18,9 @@ static uint32_t xorshift32(void) {
 }
 
 static uint8_t cmd_init_prng(uint8_t *data, uint16_t len) {
-    state = ((uint32_t) data[0]) << 24 ||
-            ((uint32_t) data[1]) << 16 ||
-            ((uint32_t) data[2]) << 8 ||
+    state = ((uint32_t) data[0]) << 24 |
+            ((uint32_t) data[1]) << 16 |
+            ((uint32_t) data[2]) << 8 |
             ((uint32_t) data[3]);
     wait_a_bit();
     return 0;
@@ -59,6 +59,7 @@ static uint8_t cmd_export(uint8_t *data, uint16_t len) {
     simpleserial_put('x', CURVE_SIZE, pubkey);
     wait_a_bit();
     simpleserial_put('y', CURVE_SIZE, pubkey + CURVE_SIZE);
+    //simpleserial_put('k', CURVE_SIZE, privkey);
     led_error(0);
     return 0;
 }
