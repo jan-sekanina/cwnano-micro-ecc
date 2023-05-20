@@ -955,14 +955,6 @@ static uECC_word_t EccPoint_compute_public_key(uECC_word_t *result,
        attack to learn the number of leading zeros. */
     carry = regularize_k(private_key, tmp1, tmp2, curve);
 
-    /* If an RNG function was specified, try to get a random initial Z value to improve
-       protection against side-channel attacks. */
-    if (g_rng_function) {
-        if (!uECC_generate_random_int(p2[carry], curve->p, curve->num_words)) {
-            return 0;
-        }
-        initial_Z = p2[carry];
-    }
     EccPoint_mult(result, curve->G, p2[!carry], initial_Z, curve->num_n_bits + 1, curve);
 
     if (EccPoint_isZero(result, curve)) {

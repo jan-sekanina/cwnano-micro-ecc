@@ -38,20 +38,7 @@ static int uECC_sign_with_k_internal(const uint8_t *private_key,
         return 0;
     }
 
-    /* If an RNG function was specified, get a random number
-       to prevent side channel analysis of k. */
-    if (!g_rng_function) {
-        uECC_vli_clear(tmp, num_n_words);
-        tmp[0] = 1;
-    } else if (!uECC_generate_random_int(tmp, curve->n, num_n_words)) {
-        return 0;
-    }
-
-    /* Prevent side channel analysis of uECC_vli_modInv() to determine
-       bits of k / the private key by premultiplying by a random number */
-    uECC_vli_modMult(k, k, tmp, curve->n, num_n_words); /* k' = rand * k */
-    uECC_vli_modInv(k, k, curve->n, num_n_words);       /* k = 1 / k' */
-    uECC_vli_modMult(k, k, tmp, curve->n, num_n_words); /* k = 1 / k */
+    uECC_vli_modInv(k, k, curve->n, num_n_words);       /* k = 1 / k */
 
 #if uECC_VLI_NATIVE_LITTLE_ENDIAN == 0
     uECC_vli_nativeToBytes(signature, curve->num_bytes, p); /* store r */
