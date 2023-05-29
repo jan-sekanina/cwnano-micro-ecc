@@ -37,8 +37,8 @@ The makefile has one important define `uECC_LEAKY`. When set to `1` a leaky
 scalar-multiplication algorithm is used in ECDSA. When set to `0` a non-leaky one
 is used.
 
-## Completing ChipWhisperer Installation
-Download the 50-newae.rules file from  https://github.com/newaetech/chipwhisperer/tree/develop/hardware
+## Completing ChipWhisperer Installation on Debian-like systems
+Download the 50-newae.rules file from https://github.com/newaetech/chipwhisperer/tree/develop/hardware
 
 Run the following commands: 
 
@@ -51,7 +51,8 @@ Run the following commands:
 
 ## Virtual Machine
 
-We will provide a virtual machine with all the prerequisities installed. 
+Below is a link virtual machine with all the prerequisities installed: 
+https://www.dropbox.com/s/3fpmvbaa5m74t23/ubuntu-23.ova
 
 ## Interacting with the target
 
