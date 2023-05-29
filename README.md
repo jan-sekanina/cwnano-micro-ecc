@@ -42,12 +42,16 @@ Download the 50-newae.rules file from  https://github.com/newaetech/chipwhispere
 
 Run the following commands: 
 
-        sudo cp 50-newae.rules /etc/udev/rules.d/50-newae.rules
-        sudo udevadm control --reload-rules
-        sudo groupadd -f chipwhisperer
-        sudo usermod -aG chipwhisperer $USER
-        sudo usermod -aG plugdev $USER
-        reboot
+    sudo cp 50-newae.rules /etc/udev/rules.d/50-newae.rules
+    sudo udevadm control --reload-rules
+    sudo groupadd -f chipwhisperer
+    sudo usermod -aG chipwhisperer $USER
+    sudo usermod -aG plugdev $USER
+    reboot
+
+## Virtual Machine
+
+We will provide a virtual machine with all the prerequisities installed. 
 
 ## Interacting with the target
 
