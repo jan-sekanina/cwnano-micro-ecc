@@ -25,10 +25,6 @@ Some structure:
 
 `python >= 3.8` and installed dependencies from [requirements.txt](/requirements.txt).
 
-### SageMath stuff
-
-`sagemath` and ability to run a Jupyter notebook with a SageMath kernel.
-
 ## Building the target
 
 Run `make` and observe several `micro-ecc-CWNANO` files being built.
