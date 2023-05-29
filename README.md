@@ -37,6 +37,18 @@ The makefile has one important define `uECC_LEAKY`. When set to `1` a leaky
 scalar-multiplication algorithm is used in ECDSA. When set to `0` a non-leaky one
 is used.
 
+## Completing ChipWhisperer Installation
+Download the 50-newae.rules file from  https://github.com/newaetech/chipwhisperer/tree/develop/hardware
+
+Run the following commands: 
+
+        sudo cp 50-newae.rules /etc/udev/rules.d/50-newae.rules
+        sudo udevadm control --reload-rules
+        sudo groupadd -f chipwhisperer
+        sudo usermod -aG chipwhisperer $USER
+        sudo usermod -aG plugdev $USER
+        reboot
+
 ## Interacting with the target
 
 The `client.py` file has a `DeviceTarget` class that can communicate with the target.
