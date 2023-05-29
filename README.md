@@ -24,10 +24,7 @@ Some structure:
 ### Python stuff
 
 `python >= 3.8` and installed dependencies from [requirements.txt](/requirements.txt).
-
-### SageMath stuff
-
-`sagemath` and ability to run a Jupyter notebook with a SageMath kernel.
+Note that the [fpylll](https://github.com/fplll/fpylll) installation is quite involved.
 
 ## Building the target
 
