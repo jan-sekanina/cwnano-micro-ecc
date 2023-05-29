@@ -24,6 +24,7 @@ Some structure:
 ### Python stuff
 
 `python >= 3.8` and installed dependencies from [requirements.txt](/requirements.txt).
+Note that the [fpylll](https://github.com/fplll/fpylll) installation is quite involved.
 
 ## Building the target
 
