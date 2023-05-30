@@ -48,8 +48,14 @@ Run the following commands:
 
 ## Virtual Machine
 
-Below is a link virtual machine with all the prerequisities installed: 
+Below is a link to a VirtualBox virtual machine with all the prerequisities installed: 
 https://www.dropbox.com/s/3fpmvbaa5m74t23/ubuntu-23.ova
+
+You need the VirtualBox extension pack to use the VM.
+When loading the VM, make sure USB 3.0 is enabled in its settings.
+
+Also, make sure that you enable "NewAE Technology Inc. ChipWhisperer Nano" in the "Devices" -> "USB"
+settings.
 
 ## Interacting with the target
 
