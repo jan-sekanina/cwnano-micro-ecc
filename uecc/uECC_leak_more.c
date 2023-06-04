@@ -2,27 +2,26 @@
 
 #include "uECC.h"
 #include "uECC_vli.h"
+#include "hal/hal.h"
 
 /* Counts the number of bits required to represent vli. */
 uECC_VLI_API bitcount_t uECC_numBits(const uECC_word_t *vli, const wordcount_t max_words) {
-    uECC_word_t i, j;
-    bitcount_t bits = 0;
-    bitcount_t res;
+    uECC_word_t i;
+    uECC_word_t digit;
 
-    if (max_words == 0) {
+    wordcount_t num_digits = vli_numDigits(vli, max_words);
+    if (num_digits == 0) {
         return 0;
     }
 
-    for (i = 0; i < max_words; ++i) {
-        for (j = 0; j < uECC_WORD_BITS; ++j) {
-            if (uECC_vli_testBit(vli, bits)) {
-                res = bits;
-            }
-            bits++;
-        }
+    digit = vli[num_digits - 1];
+    for (i = 0; digit; ++i) {
+        NOP_2();
+        digit >>= 1;
+        NOP_2();
     }
 
-    return res;
+    return (((bitcount_t)(num_digits - 1) << uECC_WORD_BITS_SHIFT) + i);
 }
 
 static int uECC_sign_with_k_internal(const uint8_t *private_key,
