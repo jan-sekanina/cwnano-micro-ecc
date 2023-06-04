@@ -1238,6 +1238,8 @@ static void bits2int(uECC_word_t *native,
 #include "uECC_noleak.c"
 #elif uECC_LEAKY == 1
 #include "uECC_leak.c"
+#elif uECC_LEAKY == 2
+#include "uECC_leak_more.c"
 #endif
 
 int uECC_sign(const uint8_t *private_key,
