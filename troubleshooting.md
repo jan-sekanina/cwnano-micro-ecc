@@ -1,3 +1,17 @@
+## USB error after running notebook cell
+
+Might be several things:
+ - Other notebook is holding the USB busy.
+ - VM USB version issue described below.
+ - VM USB device not enabled (described below).
+ - ???
+ 
+What usually works for the "???" case is to physically disconnect 
+the ChipWhisperer Nano and reconnect it, possibly restarting
+the notebook in between, then proceed with the steps. Note, that
+during such a restart all of the state of the target is lost
+(even keys, or RNG state).
+
 ## VM USB version
 
 The VM needs to have USB 3.0 enabled for the ChipWhisperer communication

@@ -2,6 +2,11 @@
 
 This repository contains the code needed during the tutorial.
 
+See [installation.md](/installation.md) for installation instructions and
+[troubleshooting.md](/troubleshooting.md) for common issues.
+
+Finally there is [tutorial.md](/tutorial.md) describing the steps of the tutorial.
+
 Some structure:
  - hal: Contains the Hardware Abstraction Layer files for the STM target boards we are using.
         You don't need to touch this in any way. This is taken from ChipWhisperer firmware directory.
@@ -14,15 +19,6 @@ Some structure:
  - Makefile: Makefile to build the target.
  - Makefile.inc: Additional makefile boilerplate.
  - README.md: This README.
-
-See [installation.md](/installation.md) for installation instructions and
-[troubleshooting.md](/troubleshooting.md) for common issues.
-
-## Interacting with the target
-
-The `client.py` file has a `DeviceTarget` class that can communicate with the target.
-See the `collect.ipynb` Jupyter notebook.
-
-## Running the attacks
-
-See the `nonce_reuse.ipynb` and `nonce_bitlength_leak.ipynb` notebooks.
+ - installation.md
+ - troubleshooting.md
+ - tutorial.md

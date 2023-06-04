@@ -7,3 +7,4 @@ chipwhisperer
 ecdsa
 jupyter
 notebook
+tqdm
