@@ -3,6 +3,9 @@
 In this tutorial you will mount several attacks on a vulnerable implementation
 of ECDSA running on a [ChipWhisperer-Nano](https://rtfm.newae.com/Capture/ChipWhisperer-Nano/) board.
 
+First of all, make sure that you have everything ready as per the
+[installation.md](installation.md) file.
+
 
 ## 1. Building the target implementation
 
@@ -68,10 +71,26 @@ If you do not have the time to collec the traces, use the trace set provided bel
 
 **TODO: Trace set link.**
 
+Use the [collect.ipynb](notebooks/collect.ipynb) notebook to collect 1500 traces
+and store them into `traces_collected1.pickle` (should take about 15 minutes).
+
 Open the [nonce_bitlength_leak.ipynb](notebooks/nonce_bitlength_leak.ipynb) notebook.
+
+Load the collected (or downloaded) trace set and run the attack with all of the traces,
+using overall signing duration as a proxy of the bit-length of the nonce.
+
+If the attack did not work, collect more traces (into `traces_collected2.pickle`)
+and use the provided code to merge the trace sets.
+
+Next, iterate over 
+
+**TODO**
 
 
 ## 4b. Running the nonce-bitlength-leak attack (via power-tracing)
 
 
 Open the [nonce_bitlength_leak.ipynb](notebooks/nonce_bitlength_leak.ipynb) notebook.
+
+
+**TODO**
