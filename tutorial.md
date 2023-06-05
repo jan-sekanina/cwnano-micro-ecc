@@ -61,7 +61,12 @@ methods on the `DeviceTarget` class that are shown in the notebook.
 ## 4a. Running the nonce-bitlength-leak attack (via timing)
 
 For the nonce-bitlength-leak attacks you will need to collect several thousand
-traces, this can take some time.
+traces, this can take some time. Collecting a 1000 traces should take
+about 10 minutes. Depending on the noise level in timing measurement (USB jitter,
+VM stuff, overall system noise) from 900 to 3000 traces are required for the attack.
+If you do not have the time to collec the traces, use the trace set provided below:
+
+**TODO: Trace set link.**
 
 Open the [nonce_bitlength_leak.ipynb](notebooks/nonce_bitlength_leak.ipynb) notebook.
 
