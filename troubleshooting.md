@@ -1,4 +1,4 @@
-## USB error after running notebook cell
+## USB error after running Jupyter notebook cell
 
 Might be several things:
  - Other notebook is holding the USB busy.
@@ -28,3 +28,19 @@ The VM needs to be able to talk to the ChipWhisperer device.
 Make sure that you enable "NewAE Technology Inc. ChipWhisperer Nano"
 in the "Devices" -> "USB" settings. You may not see this option
 unless you have the ChipWhisperer device physically connected.
+
+## Jupyter notebook: Cells do not actually run (but appear to)
+
+You can also spot this issue in the Jupyter notebook log:
+
+    Uncaught exception in ZMQStream callback
+
+Also, you can spot this when the plots in the notebook stop
+updating (and freeze on some fixed resolution).
+
+Making the notebook "trusted" (top-right in the notebook interface)
+helps as it is then able to restart when the error happens.
+
+If that does not help, restarting the kernel might help.
+The only thing that seems to work reliably is to shut down the notebook
+(File -> Close and Halt), and then reopen it.
