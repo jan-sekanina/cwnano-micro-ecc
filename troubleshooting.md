@@ -43,4 +43,6 @@ helps as it is then able to restart when the error happens.
 
 If that does not help, restarting the kernel might help.
 The only thing that seems to work reliably is to shut down the notebook
-(File -> Close and Halt), and then reopen it.
+(File -> Close and Halt), and then reopen it. **Note that both 
+restarting the kernel and shutting down the notebook looses all of
+the internal state of the notebook (variables).**
