@@ -17,6 +17,8 @@ When set to `2` a very leaky scalar-multiplication algorithm is used in ECDSA
 scalar-multiplication algorithm is used in ECDSA (see the [uecc/uECC_leak.c](uecc/uECC_leak.c) file).
 When set to `0` a non-leaky one is used (see the [uecc/uECC_noleak.c](uecc/uECC_noleak.c) file).
 
+By default `uECC_LEAKY` is set to `1` and you should keep it that way.
+
 The implementation is based on [micro-ecc](https://github.com/kmackay/micro-ecc),
 the only modifications are in the mentioned files, you can compare the leaky and non-leaky files to
 see the differences.
@@ -46,10 +48,8 @@ to first flash the built implementation on the board, connect to it and then col
 
 Use the plots to observe the start of the ECDSA signing process.
 The function `EccPoint_mult` is called at around sample index 1100 (when
-the `uECC_leak_more.c` implementation is used) and continues way past the
+the `uECC_leak.c` implementation is used) and continues way past the
 collected amount of samples (the full signing would take around 8 million samples).
-
-Compare `traces[0]` and `traces[2]` using the `plot_traces` function.
 
 Don't forget to disconnect from the target once done, so that other notebooks
 can work with it.
@@ -82,15 +82,36 @@ using overall signing duration as a proxy of the bit-length of the nonce.
 If the attack did not work, collect more traces (into `traces_collected2.pickle`)
 and use the provided code to merge the trace sets.
 
-Next, iterate over 
+Next, you will investigate the success rate of the attack as two of its parameters change:
+the number of signatures collected by the attacker, and the number of signatures used by the
+attacker to build the lattice.
 
-**TODO**
-
+Answer the questions regarding the success rate.
 
 ## 4b. Running the nonce-bitlength-leak attack (via power-tracing)
 
+You will now try to mount the attack without using the timing information, instead
+using the collected power traces.
 
-Open the [nonce_bitlength_leak.ipynb](notebooks/nonce_bitlength_leak.ipynb) notebook.
+Open the [process.ipynb](notebooks/process.ipynb) notebook.
 
+The notebook contains some imports that you can play with to analyze the traces.
+Your overall goal is to do SPA and obtain for each of the traces a guess of the
+bit-length of the nonce used in signing.
 
-**TODO**
+Compare `traces[0]` and `traces[2]` using the `plot_traces` function.
+You should focus on the area from sample number 850 to sample number 1100 which
+corresponds to the `uECC_vli_numbits` call in the `uECC_leak.c` file.
+
+Follow the instructions in the notebook and experiment with various techniques
+to try to obtain a proxy value for the nonce bit-length from the traces.
+
+Once you have a good proxy, you will save it with the traces and continue
+with the [nonce_bitlength_leak.ipynb](notebooks/nonce_bitlength_leak.ipynb) notebook.
+
+You used the notebook before with timing leakage, now take your proxy for bit-length
+that you computed from the power traces and use that to sort the signatures
+and mount the attack. Do all of the steps as in the timing attack variant of the notebook,
+especially look at the success rate of the attack.
+
+Finally, you can try to improve your proxy to improve the success rate.
