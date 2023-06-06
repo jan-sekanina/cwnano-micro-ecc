@@ -84,7 +84,7 @@ and use the provided code to merge the trace sets.
 
 Next, you will investigate the success rate of the attack as two of its parameters change:
 the number of signatures collected by the attacker, and the number of signatures used by the
-attacker to build the lattice.
+attacker to build the lattice. Solve the TODOs.
 
 Answer the questions regarding the success rate.
 
@@ -104,7 +104,7 @@ You should focus on the area from sample number 850 to sample number 1100 which
 corresponds to the `uECC_vli_numbits` call in the `uECC_leak.c` file.
 
 Follow the instructions in the notebook and experiment with various techniques
-to try to obtain a proxy value for the nonce bit-length from the traces.
+to try to obtain a proxy value for the nonce bit-length from the traces. Solve the TODOs.
 
 Once you have a good proxy, you will save it with the traces and continue
 with the [nonce_bitlength_leak.ipynb](notebooks/nonce_bitlength_leak.ipynb) notebook.
