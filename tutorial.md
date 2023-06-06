@@ -48,7 +48,7 @@ to first flash the built implementation on the board, connect to it and then col
 
 Use the plots to observe the start of the ECDSA signing process.
 The function `EccPoint_mult` is called at around sample index 1100 (when
-the `uECC_leak.c` implementation is used) and continues way past the
+the [uecc/uECC_leak.c](uecc/uECC_leak.c) implementation is used) and continues way past the
 collected amount of samples (the full signing would take around 8 million samples).
 
 Don't forget to disconnect from the target once done, so that other notebooks
@@ -101,7 +101,7 @@ bit-length of the nonce used in signing.
 
 Compare `traces[0]` and `traces[2]` using the `plot_traces` function.
 You should focus on the area from sample number 850 to sample number 1100 which
-corresponds to the `uECC_vli_numbits` call in the `uECC_leak.c` file.
+corresponds to the `uECC_vli_numbits` call in the [uecc/uECC_leak.c](uecc/uECC_leak.c) file.
 
 Follow the instructions in the notebook and experiment with various techniques
 to try to obtain a proxy value for the nonce bit-length from the traces. Solve the TODOs.
