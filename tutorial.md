@@ -58,7 +58,8 @@ collected amount of samples (the full signing would take around 8 million sample
 Don't forget to disconnect from the target once done, so that other notebooks
 can work with it.
 
-Also be aware about the possible issue with the Jupyter notebook (cells not actually running but appear to) - see [troubleshooting.md](/troubleshooting.md for more info. Essentially running each cell should produce some output. For example, running cell one should generate the following: ![alt text](figs/logo.png?raw=true "logo")
+Also be aware about the possible issue with the Jupyter notebook (cells not actually running but appear to) - see [troubleshooting.md](/troubleshooting.md for more info. Essentially running each cell should produce some output. For example, running cell one should generate the following:  
+![alt text](figs/logo.png?raw=true "logo after cell 1").
 
 
 
