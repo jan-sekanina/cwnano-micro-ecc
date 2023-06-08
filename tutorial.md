@@ -34,6 +34,10 @@ Activate the virtualenv where you have installed the dependencies
 
 	. virt/bin/activate
 
+In the VM the following command will work for example:
+
+	source ~/cwnano-micro-ecc/venv/bin/activate
+
 Start the Jupyter notebook server by running:
 
 	jupyter notebook
