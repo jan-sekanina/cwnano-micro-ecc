@@ -16,6 +16,19 @@ When loading the VM, make sure USB 3.0 is enabled in its settings.
 Also, make sure that you enable "NewAE Technology Inc. ChipWhisperer Nano" in the "Devices" -> "USB"
 settings.
 
+After you run the VM please update the repository to the latest version, run the following commands:
+
+    cd ~/cwnano-micro-ecc$
+    git pull
+
+If there are any issues with pulling please run 
+
+    git reset --hard
+
+and then 
+
+    git pull
+
 See [troubleshooting.md](/troubleshooting.md) for more info.
 
 ## Installing everything yourself
