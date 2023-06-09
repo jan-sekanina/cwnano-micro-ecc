@@ -58,7 +58,9 @@ collected amount of samples (the full signing would take around 8 million sample
 Don't forget to disconnect from the target once done, so that other notebooks
 can work with it.
 
-Also be aware about the possible issue with the Jupyter notebook (cells not actually running but appear to) - see [troubleshooting.md](/troubleshooting.md for more info. Essentially running each cell should produce some output. For example, running cell one should generate the following:  
+Also be aware about the possible issue with the Jupyter notebook (cells not actually running but appear to)
+- see [troubleshooting.md](/troubleshooting.md) for more info. Essentially running each
+cell should produce some output. For example, running cell one should generate the following:  
 ![alt text](figs/logo.png?raw=true "logo after cell 1").
 
 
@@ -78,7 +80,7 @@ about 10 minutes. Depending on the noise level in timing measurement (USB jitter
 VM stuff, overall system noise) from 900 to 3000 traces are required for the attack.
 If you do not have the time to collec the traces, use the trace set provided below:
 
-**TODO: Trace set link.**
+https://drive.google.com/file/d/1rtMiWVIj8roAA8disbRI-Gsj1IRuK8gD/view?usp=sharing
 
 Use the [collect.ipynb](notebooks/collect.ipynb) notebook to collect 1500 traces
 and store them into `traces_collected1.pickle` (should take about 15 minutes).
