@@ -46,3 +46,8 @@ The only thing that seems to work reliably is to shut down the notebook
 (File -> Close and Halt), and then reopen it. **Note that both 
 restarting the kernel and shutting down the notebook looses all of
 the internal state of the notebook (variables).**
+
+## Use correct device for this project
+Take a look at the box from the device you are attempting to run
+this project on and make sure that you are not using for examle
+Chip Whisperer Lite.
