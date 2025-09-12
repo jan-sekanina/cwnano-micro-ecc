@@ -13,11 +13,13 @@ CDEFS += -DuECC_LEAKY=1
 
 CFLAGS += -fomit-frame-pointer
 
-PLATFORM ?= CWNANO
+PLATFORM ?= CWLITEARM
 
 ifeq ($(PLATFORM),CW308_XMEGA)
 
 else ifeq ($(PLATFORM),CWNANO)
+
+else ifeq ($(PLATFORM),CWLITEARM)
 
 else ifeq ($(PLATFORM),CW308_STM32F0)
 

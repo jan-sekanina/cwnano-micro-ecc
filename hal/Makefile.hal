@@ -10,7 +10,7 @@ VPATH += :$(HALPATH)
 #Default stuff
 EXTRAINCDIRS += $(HALPATH)
 
-PLATFORM_LIST = CW308_STM32F0 CW308_STM32F3 CW308_XMEGA CWNANO HOST
+PLATFORM_LIST = CW308_STM32F0 CW308_STM32F3 CW308_XMEGA CWNANO HOST CWLITEARM
 
 define KNOWN_PLATFORMS
 
@@ -25,6 +25,9 @@ define KNOWN_PLATFORMS
 +-------------------------------------------------------+
 | HOST          | Host machine                          |
 +-------------------------------------------------------+
+| CWLITEARM     | CW-Lite Arm (Alias for CW308_STM32F3) |
++-------------------------------------------------------+
+
 
 endef
 
@@ -52,6 +55,11 @@ else ifeq ($(PLATFORM),CW308_STM32F3)
 else ifeq ($(PLATFORM),HOST)
   HAL = host
   PLTNAME = HOST: Host machine target
+else ifeq ($(PLATFORM),CWLITEARM)
+  HAL = stm32f3
+  PLTNAME = CW-Lite Arm \(STM32F3\)
+  EXTRAPATH=
+
 else
   $(error Invalid or empty PLATFORM: $(PLATFORM). Known platforms: $(KNOWN_PLATFORMS))
 endif
